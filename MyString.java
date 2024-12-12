@@ -4,22 +4,22 @@
 public class MyString {
     public static void main(String args[]) {
         String hello = "hello";
-        System.out.println(countChar(hello, 'h')); // 1
-        System.out.println(countChar(hello, 'l')); // 2
-        System.out.println(countChar(hello, 'z')); // 0
-        System.out.println(spacedString(hello)); // "h e l l o"
-        System.out.println(subsetOf("spa", "space")); // true
-        System.out.println(subsetOf("pass", "space")); // false
-        System.out.println(remove("committee", "meet")); // "comit"
-        System.out.println(randomStringOfLetters(5)); // Random string of 5 letters
-        System.out.println(insertRandomly('x', "test")); // "xtest", "txest", etc.
+        System.out.println(countChar(hello, 'h'));
+        System.out.println(countChar(hello, 'l'));
+        System.out.println(countChar(hello, 'z'));
+        System.out.println(spacedString(hello));
+        System.out.println(subsetOf("spa", "space"));
+        System.out.println(subsetOf("pass", "space"));
+        System.out.println(remove("committee", "meet"));
+        System.out.println(randomStringOfLetters(5));
+        System.out.println(insertRandomly('x', "test"));
     }
 
     public static int countChar(String str, char ch) {
         int count = 0;
         for (int i = 0; i < str.length(); i++) {
             if (str.charAt(i) == ch) {
-                count++;/*  */
+                count++;
             }
         }
         return count;
