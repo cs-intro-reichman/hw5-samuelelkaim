@@ -71,3 +71,97 @@ public class MyString {
         return str.substring(0, randomIndex) + ch + str.substring(randomIndex);
     }
 }
+
+/**
+ * Scrabble game implementation.
+ */
+import java.util.*;
+
+public class Scrabble {
+
+    static final String WORDS_FILE = "dictionary.txt";
+    static final int[] SCRABBLE_LETTER_VALUES = { 1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10 };
+    static int HAND_SIZE = 10;
+    static String[] DICTIONARY;
+    static int NUM_OF_WORDS;
+
+    public static void init() {
+        List<String> dictionaryList = new ArrayList<>();
+        Scanner scanner = new Scanner(Scrabble.class.getResourceAsStream(WORDS_FILE));
+        while (scanner.hasNext()) {
+            dictionaryList.add(scanner.next().toLowerCase());
+        }
+        DICTIONARY = dictionaryList.toArray(new String[0]);
+        NUM_OF_WORDS = DICTIONARY.length;
+    }
+
+    public static boolean isWordInDictionary(String word) {
+        return Arrays.asList(DICTIONARY).contains(word);
+    }
+
+    public static int wordScore(String word) {
+        int score = 0;
+        for (char c : word.toCharArray()) {
+            score += SCRABBLE_LETTER_VALUES[c - 'a'];
+        }
+        score *= word.length();
+        if (word.length() == HAND_SIZE) {
+            score += 50;
+        }
+        if (word.contains("r") && word.contains("u") && word.contains("n") && word.contains("i")) {
+            score += 1000;
+        }
+        return score;
+    }
+
+    public static String createHand() {
+        StringBuilder hand = new StringBuilder();
+        for (int i = 0; i < HAND_SIZE - 2; i++) {
+            hand.append((char) ('a' + Math.random() * 26));
+        }
+        hand.append('a').append('e');
+        return MyString.insertRandomly('a', MyString.insertRandomly('e', hand.toString()));
+    }
+
+    public static void playHand(String hand) {
+        int score = 0;
+        Scanner scanner = new Scanner(System.in);
+        while (!hand.isEmpty()) {
+            System.out.println("Current Hand: " + MyString.spacedString(hand));
+            System.out.print("Enter a word, or '.' to finish playing this hand: ");
+            String input = scanner.next().toLowerCase();
+            if (".".equals(input)) {
+                break;
+            }
+            if (isWordInDictionary(input) && MyString.subsetOf(input, hand)) {
+                int wordScore = wordScore(input);
+                score += wordScore;
+                System.out.println(input + " earned " + wordScore + " points. Score: " + score + " points");
+                hand = MyString.remove(hand, input);
+            } else {
+                System.out.println("Invalid word. Try again.");
+            }
+        }
+        System.out.println("End of hand. Total score: " + score + " points");
+    }
+
+    public static void playGame() {
+        init();
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.print("Enter n to deal a new hand, or e to end the game: ");
+            String input = scanner.next().toLowerCase();
+            if ("e".equals(input)) {
+                break;
+            } else if ("n".equals(input)) {
+                playHand(createHand());
+            } else {
+                System.out.println("Invalid input. Please enter 'n' or 'e'.");
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        playGame();
+    }
+}
