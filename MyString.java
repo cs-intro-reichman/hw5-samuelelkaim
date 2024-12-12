@@ -1,167 +1,122 @@
-/**
- * A library of string functions.
- */
 public class MyString {
+    /*
     public static void main(String args[]) {
-        String hello = "hello";
-        System.out.println(countChar(hello, 'h'));
-        System.out.println(countChar(hello, 'l'));
-        System.out.println(countChar(hello, 'z'));
-        System.out.println(spacedString(hello));
-        System.out.println(subsetOf("spa", "space"));
-        System.out.println(subsetOf("pass", "space"));
-        System.out.println(remove("committee", "meet"));
-        System.out.println(randomStringOfLetters(5));
-        System.out.println(insertRandomly('x', "test"));
-    }
+        System.out.println(MyString.subsetOf("sap","space"));
+        System.out.println(MyString.subsetOf("spa","space"));
+        System.out.println(MyString.subsetOf("pass","space"));
+        System.out.println(MyString.subsetOf("c","space"));
+        System.out.println("..." + MyString.spacedString("foobar") + "...");
+        System.out.println(MyString.randomStringOfLetters(3));
+        // Put more tests of your own here.
+        System.out.println(countChar("ddd",'d'));
+        System.out.println(subsetOf("good job!","good job!"));
+        System.out.println(remove("meet","committee"));
 
-    public static int countChar(String str, char ch) {
+    }
+    */
+     
+
+    /**
+     * Returns the number of times the given character appears in the given string.
+     * 
+     * @param str - a string
+     * @param c - a character
+     * @return the number of times c appears in str
+     */
+    public static int countChar(String str, char c) {
+        // Replace the following statement with your code.
+        if(str == "") return 0;
         int count = 0;
-        for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == ch) {
+        for ( int i = 0; i < str.length(); i++){
+            if(str.charAt(i) == c) {
                 count++;
             }
         }
         return count;
+    
     }
 
+    /** Returns true if str1 is a subset string str2, false otherwise.
+     *  For example, "spa" is a subset of "space", and "pass" is not
+     *  a subset of "space".
+     *
+     * @param str1 - a string
+     * @param str2 - a string
+     * @return true is str1 is a subset of str2, false otherwise
+     */
     public static boolean subsetOf(String str1, String str2) {
-        for (int i = 0; i < str1.length(); i++) {
-            if (countChar(str2, str1.charAt(i)) < countChar(str1, str1.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
+        // Replace the following statement with your code.
+        if(str1 == null || str2 == null || str2.length() < str1.length()) return false;
+        if((remove(str1,str2)).equals("")) return true;
+        return false;
     }
 
+    /** Returns a string which is the same as the given string, with a space
+     * character inserted after each character in the given string, except
+     * for last character of the string, that has no space after it. 
+     * Example: if str is "silent", returns "s i l e n t".
+     * 
+     * @param str - a string
+     * @return a string consisting of the characters of str, separated by spaces.
+     */
     public static String spacedString(String str) {
-        StringBuilder spaced = new StringBuilder();
-        for (int i = 0; i < str.length(); i++) {
-            spaced.append(str.charAt(i));
-            if (i < str.length() - 1) {
-                spaced.append(" ");
-            }
-        }
-        return spaced.toString();
-    }
+        // Replace the following statement with your code.
 
+        String spaceStr = "";
+        if (str.length() == 0) return "";
+        for(int i = 0; i < str.length()-1; i++){
+            spaceStr += str.charAt(i) +" ";
+        }
+        spaceStr += str.charAt(str.length()-1);
+        return spaceStr;
+    }
+  
+    /**
+     * Returns a string of n lowercase letters, selected randomly from 
+     * the English alphabet 'a', 'b', 'c', ..., 'z'. Note that the same
+     * letter can be selected more than once.
+     * 
+     * @param n - the number of letter to select
+     * @return a randomly generated string, consisting of 'n' lowercase letters
+     */
     public static String randomStringOfLetters(int n) {
-        StringBuilder randomString = new StringBuilder();
-        for (int i = 0; i < n; i++) {
-            char randomChar = (char) ('a' + Math.random() * 26);
-            randomString.append(randomChar);
+        // Replace the following statement with your code.
+        //97-122
+        if (n<=0)return "not a valid input!";
+        String randomsLetters= "";
+        for(int i = 0; i < n; i++){
+            char c = (char)((int)(Math.random()*26 + 97));
+            randomsLetters += c;
+
         }
-        return randomString.toString();
+
+        return randomsLetters;
     }
 
+    /**
+     * Returns a string consisting of the string str1, minus all the characters in the
+     * string str2. Assumes (without checking) that str2 is a subset of str1.
+     * Example: "committee" minus "meet" returns "comit". 
+     * 
+     * @param str1 - a string
+     * @param str2 - a string
+     * @return a string consisting of str1 minus all the characters of str2
+     */
     public static String remove(String str1, String str2) {
-        StringBuilder result = new StringBuilder(str1);
-        for (int i = 0; i < str2.length(); i++) {
-            char ch = str2.charAt(i);
-            int index = result.indexOf(String.valueOf(ch));
-            if (index != -1) {
-                result.deleteCharAt(index);
+        // Replace the following statement with your code.
+        String removeStr = "";
+        for(int i = 0; i <str1.length(); i++){
+            char c = str1.charAt(i);
+            if(countChar(str2,c) == 0){
+                removeStr += c;
+            }else{
+                String str2Beginning= str2.substring(0,str2.indexOf(c));
+                String str2End = str2.substring(str2.indexOf(c)+1);
+                str2= str2Beginning + str2End;
             }
         }
-        return result.toString();
+        return removeStr;
     }
-
-    public static String insertRandomly(char ch, String str) {
-        int randomIndex = (int) (Math.random() * (str.length() + 1));
-        return str.substring(0, randomIndex) + ch + str.substring(randomIndex);
-    }
-}
-
-/**
- * Scrabble game implementation.
- */
-import java.util.*;
-
-public class Scrabble {
-
-    static final String WORDS_FILE = "dictionary.txt";
-    static final int[] SCRABBLE_LETTER_VALUES = { 1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10 };
-    static int HAND_SIZE = 10;
-    static String[] DICTIONARY;
-    static int NUM_OF_WORDS;
-
-    public static void init() {
-        List<String> dictionaryList = new ArrayList<>();
-        Scanner scanner = new Scanner(Scrabble.class.getResourceAsStream(WORDS_FILE));
-        while (scanner.hasNext()) {
-            dictionaryList.add(scanner.next().toLowerCase());
-        }
-        DICTIONARY = dictionaryList.toArray(new String[0]);
-        NUM_OF_WORDS = DICTIONARY.length;
-    }
-
-    public static boolean isWordInDictionary(String word) {
-        return Arrays.asList(DICTIONARY).contains(word);
-    }
-
-    public static int wordScore(String word) {
-        int score = 0;
-        for (char c : word.toCharArray()) {
-            score += SCRABBLE_LETTER_VALUES[c - 'a'];
-        }
-        score *= word.length();
-        if (word.length() == HAND_SIZE) {
-            score += 50;
-        }
-        if (word.contains("r") && word.contains("u") && word.contains("n") && word.contains("i")) {
-            score += 1000;
-        }
-        return score;
-    }
-
-    public static String createHand() {
-        StringBuilder hand = new StringBuilder();
-        for (int i = 0; i < HAND_SIZE - 2; i++) {
-            hand.append((char) ('a' + Math.random() * 26));
-        }
-        hand.append('a').append('e');
-        return MyString.insertRandomly('a', MyString.insertRandomly('e', hand.toString()));
-    }
-
-    public static void playHand(String hand) {
-        int score = 0;
-        Scanner scanner = new Scanner(System.in);
-        while (!hand.isEmpty()) {
-            System.out.println("Current Hand: " + MyString.spacedString(hand));
-            System.out.print("Enter a word, or '.' to finish playing this hand: ");
-            String input = scanner.next().toLowerCase();
-            if (".".equals(input)) {
-                break;
-            }
-            if (isWordInDictionary(input) && MyString.subsetOf(input, hand)) {
-                int wordScore = wordScore(input);
-                score += wordScore;
-                System.out.println(input + " earned " + wordScore + " points. Score: " + score + " points");
-                hand = MyString.remove(hand, input);
-            } else {
-                System.out.println("Invalid word. Try again.");
-            }
-        }
-        System.out.println("End of hand. Total score: " + score + " points");
-    }
-
-    public static void playGame() {
-        init();
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.print("Enter n to deal a new hand, or e to end the game: ");
-            String input = scanner.next().toLowerCase();
-            if ("e".equals(input)) {
-                break;
-            } else if ("n".equals(input)) {
-                playHand(createHand());
-            } else {
-                System.out.println("Invalid input. Please enter 'n' or 'e'.");
-            }
-        }
-    }
-
-    public static void main(String[] args) {
-        playGame();
-    }
+    
+    
 }
